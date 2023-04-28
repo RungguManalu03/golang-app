@@ -37,27 +37,36 @@ func main() {
 	// 	fmt.Println(campaign.Name)
 	// }
 
-	campaignRepository := campaign.NewRepository(db)
-	campaigns, err := campaignRepository.FindByUserID(1)
+	// campaignRepository := campaign.NewRepository(db)
+	// campaigns, err := campaignRepository.FindByUserID(1)
 
-	fmt.Println("debug")
-	fmt.Println("debug")
-	fmt.Println("debug")
-	fmt.Println(len(campaigns))
-	for _, campaign := range campaigns {
-		fmt.Println(campaign.Name)
-		if len(campaign.CampaignImages) > 0 {
-			fmt.Println("Jumlah Gambar",len(campaign.CampaignImages))
-			fmt.Println(campaign.CampaignImages[0].FileName)
-		}
-	}
+	// fmt.Println("debug")
+	// fmt.Println("debug")
+	// fmt.Println("debug")
+	// fmt.Println(len(campaigns))
+	// for _, campaign := range campaigns {
+	// 	fmt.Println(campaign.Name)
+	// 	if len(campaign.CampaignImages) > 0 {
+	// 		fmt.Println("Jumlah Gambar",len(campaign.CampaignImages))
+	// 		fmt.Println(campaign.CampaignImages[0].FileName)
+	// 	}
+	// }
+
+	
 
 	userRepository := user.NewRepository(db)
+	campaignRepository := campaign.NewRepository(db)
+
 	userService := user.NewService(userRepository)
+	campaignService := campaign.NewService(campaignRepository)
 	authService := auth.NewService()
 
 	// fmt.Println(authService.GenerateToken(1001))
-	// userService.SaveAvatar(1, "runggu.png")	
+	// userService.SaveAvatar(1, "runggu.png")
+	
+	campaigns, _ := campaignService.FindCampaigns(311)
+	fmt.Println("campaigns")
+	fmt.Println(len(campaigns))
 
 	userHandler := handler.NewUserHandler(userService, authService)
 
