@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"golang-app/auth"
+	"golang-app/campaign"
 	"golang-app/handler"
 	"golang-app/helper"
 	"golang-app/user"
@@ -23,6 +25,32 @@ func main() {
 	if err != nil {
 		log.Fatal(err.Error())
   	}
+
+	// campaignRepository := campaign.NewRepository(db)
+	// campaigns, err := campaignRepository.FindAll()
+
+	// fmt.Println("debug")
+	// fmt.Println("debug")
+	// fmt.Println("debug")
+	// fmt.Println(len(campaigns))
+	// for _, campaign := range campaigns {
+	// 	fmt.Println(campaign.Name)
+	// }
+
+	campaignRepository := campaign.NewRepository(db)
+	campaigns, err := campaignRepository.FindByUserID(1)
+
+	fmt.Println("debug")
+	fmt.Println("debug")
+	fmt.Println("debug")
+	fmt.Println(len(campaigns))
+	for _, campaign := range campaigns {
+		fmt.Println(campaign.Name)
+		if len(campaign.CampaignImages) > 0 {
+			fmt.Println("Jumlah Gambar",len(campaign.CampaignImages))
+			fmt.Println(campaign.CampaignImages[0].FileName)
+		}
+	}
 
 	userRepository := user.NewRepository(db)
 	userService := user.NewService(userRepository)
