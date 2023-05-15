@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"golang-app/auth"
 	"golang-app/campaign"
 	"golang-app/handler"
@@ -24,35 +23,7 @@ func main() {
 
 	if err != nil {
 		log.Fatal(err.Error())
-  	}
-
-	// campaignRepository := campaign.NewRepository(db)
-	// campaigns, err := campaignRepository.FindAll()
-
-	// fmt.Println("debug")
-	// fmt.Println("debug")
-	// fmt.Println("debug")
-	// fmt.Println(len(campaigns))
-	// for _, campaign := range campaigns {
-	// 	fmt.Println(campaign.Name)
-	// }
-
-	// campaignRepository := campaign.NewRepository(db)
-	// campaigns, err := campaignRepository.FindByUserID(1)
-
-	// fmt.Println("debug")
-	// fmt.Println("debug")
-	// fmt.Println("debug")
-	// fmt.Println(len(campaigns))
-	// for _, campaign := range campaigns {
-	// 	fmt.Println(campaign.Name)
-	// 	if len(campaign.CampaignImages) > 0 {
-	// 		fmt.Println("Jumlah Gambar",len(campaign.CampaignImages))
-	// 		fmt.Println(campaign.CampaignImages[0].FileName)
-	// 	}
-	// }
-
-	
+  	}	
 
 	userRepository := user.NewRepository(db)
 	campaignRepository := campaign.NewRepository(db)
@@ -61,14 +32,8 @@ func main() {
 	campaignService := campaign.NewService(campaignRepository)
 	authService := auth.NewService()
 
-	// fmt.Println(authService.GenerateToken(1001))
-	// userService.SaveAvatar(1, "runggu.png")
-	
-	campaigns, _ := campaignService.FindCampaigns(311)
-	fmt.Println("campaigns")
-	fmt.Println(len(campaigns))
-
 	userHandler := handler.NewUserHandler(userService, authService)
+	campaignHandler := handler.NewCampaignHandler(campaignService)
 
 	router := gin.Default()
 	api := router.Group("/api/v1")
@@ -77,6 +42,8 @@ func main() {
 	api.POST("/sessions", userHandler.Login)
 	api.POST("/email_checkers", userHandler.CheckEmailAvailability)
 	api.POST("/avatars", authMiddleware(authService, userService), userHandler.UploadAvatar)
+
+	api.GET("/campaigns", campaignHandler.GetCampaigns)
 
 	router.Run()
 
