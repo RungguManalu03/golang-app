@@ -1,22 +1,26 @@
 package campaign
 
-import "time"
+import (
+	"golang-app/user"
+	"time"
+)
 
 type Campaign struct {
 	ID               int
 	UserID           int
 	Name             string
 	ShortDescription string
-	Descripton       string
+	Description       string
 	Perks            string
 	BackerCount      int
 	GoalAmount       int
 	CurrentAmount    int
-	slug             string
+	Slug             string
 	CreatedAt        time.Time
 	UpdatedAt        time.Time
 	//membuat relasi campaign dengan campaign_images
 	CampaignImages []CampaignImage
+	User 			user.User
 }
 
 type CampaignImage struct {
